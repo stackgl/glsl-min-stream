@@ -1,0 +1,25 @@
+{
+  "name": "glsl-min-stream",
+  "version": "0.0.0",
+  "description": "through stream that transforms glsl-parser AST nodes and rewrites variables into shorter forms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chrisdickinson/glsl-min-stream.git"
+  },
+  "keywords": [
+    "glsl",
+    "minification",
+    "stream"
+  ],
+  "author": "Chris Dickinson <chris@neversaw.us>",
+  "license": "MIT",
+  "dependencies": {
+    "shortest": "0.0.0",
+    "through": "~1.1.2",
+    "cssauron-glsl": "X.X.X"
+  }
+}
