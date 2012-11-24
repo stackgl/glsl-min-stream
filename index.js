@@ -25,7 +25,7 @@ function minifier(safe_words, mutate_storages) {
   function mutate(node) {
     if(should_mutate(node)) {
       var t = node.parent.parent.children[1]
-      if(t && (mutate_storages || (t.type === 'placeholder' || t.token.data === 'const'))) {
+      if(mutate_storages || (t.type === 'placeholder' || t.token.data === 'const')) {
         var x = seen_names[node.token.data] || counter()
         seen_names[node.token.data] = x
       }
