@@ -28,6 +28,7 @@ function minifier(safe_words, mutate_storages) {
       if(mutate_storages || (t.type === 'placeholder' || t.token.data === 'const')) {
         var x = seen_names[node.token.data] || counter()
         seen_names[node.token.data] = x
+        node.data = x
       }
     }
 
