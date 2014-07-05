@@ -1,6 +1,6 @@
 {
   "name": "glsl-min-stream",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "through stream that transforms glsl-parser AST nodes and rewrites variables into shorter forms",
   "main": "index.js",
   "scripts": {
