@@ -23,6 +23,16 @@ function minifier(safe_words, mutate_storages) {
   return through(mutate)
 
   function mutate(node) {
+    // remove unnecessary grouping operators
+    if(is_unnecessary_group(node)) return
+
+    if(node.parent) for(var current = node.parent; current.parent; current = current.parent) {
+      if(is_unnecessary_group(current)) {
+        current.parent.children[current.parent.children.indexOf(current)] = current.children[0]
+        current.children[0].parent = current.parent
+      }
+    }
+
     if(should_mutate(node)) {
       var t = node.parent.parent.children[1]
       if(mutate_storages || (t.type === 'placeholder' || t.token.data === 'const')) {
@@ -44,5 +54,9 @@ function minifier(safe_words, mutate_storages) {
 
     return base &&
           !safe_words.hasOwnProperty(node.token.data)
+  }
+
+  function is_unnecessary_group(node) {
+    return node.type === 'group' && node.children[0].lbp >= node.parent.lbp
   }
 }
