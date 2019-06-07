@@ -32,6 +32,12 @@ function minifier(safe_words, mutate_storages) {
       }
     }
 
+    // 1.0 => 1. // 0.1 => .1 // 0.0 => .0
+    if(node.type === 'literal') {
+      if(node.data.startsWith('0.')) node.data = node.data.replace(/^0\./, '.')
+      else if(/\.0+$/.test(node.data)) node.data = node.data.replace(/(\.\d+)0+$/, '$1')
+    }
+
     this.emit('data', node)
   }
 
