@@ -28,6 +28,20 @@ Create a [through stream](https://github.com/dominictarr/stream-spec#through-syn
 * `safe_word_list` defaults to `["main"]` so that the main function is not overridden.
 * `should_mutate_storages`, a boolean defaulted to `false`, determines whether the minifier should attempt to rewrite variables declared as `varying`, `attribute`, or `uniform` (usually you do not want to do this, as the client program is expecting specific variable names).
 
+# Testing
+
+Run `npm test` to run tests
+
+---
+
+When adding a code change that differs the output, make sure to run tap with snapshots:
+
+```
+npm run test -- --snapshot
+```
+
+This will regenerate the tap-snapshot files. Make sure to commit those along with other code and test changes.
+
 # License
 
 MIT
