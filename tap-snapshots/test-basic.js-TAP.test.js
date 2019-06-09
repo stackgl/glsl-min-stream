@@ -346,3 +346,13 @@ gl_FragColor = vec4((vec3(1.0) * bA + vec3(1.0) * bB + bC * vec3(1.0)) * vec3(0.
   }
 }
 `
+
+exports[`test/basic.js TAP grouping removal test > output 1`] = `
+precision highp int;precision highp float;precision highp vec2;precision highp vec3;precision highp vec4;
+#line 0
+
+#define X(a) Y \\
+  asdf \\
+  barry
+struct a{int b;float c;} d=2,c;struct e{a f;} g;struct h{vec4 i;};varying vec2 vTexcoord;varying vec3 vPosition;uniform mat4 proj,view;attribute vec3 position;attribute vec2 texcoord;int j(vec2 k);int j(vec2 k){}int l(){}int m(int d,int c){}int n(int d[2]){do x;while(1);}int o(vec2 [4]);int p(vec2,vec2);int q,r,s,t,u,v,w,x;void main(){vTexcoord=texcoord;vPosition=position;vec3 y=vec2(1.,2.);int z,A;y.rgba=2e10+.2e2+1.e3*0xFaBc09+3*z;for(a B=0;B<10;++B){discard;}while(1){z=23;}gl_Position=proj*view*vec4(position,1.0);if(q<y){z;}if(r<y) z;if(s==y) z;else if(z==w) y;if(t==y) z;else if(z==w){y;}if(u==y) z;else if(z==w){y;}else d;if(v==y) z;else z;if(w==y) z;else{z;}if(x==y){z;}else{z;}for(;;)A;return x;return;break;continue;}
+`

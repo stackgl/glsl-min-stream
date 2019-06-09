@@ -8,6 +8,7 @@ const fs = require("fs");
 const path = require("path");
 const through = require("through");
 
+const testGLSL = path.resolve(__dirname, "./test.glsl");
 const workingGLSL = path.resolve(__dirname, "./working.glsl");
 
 tap.test("basic", t => {
@@ -67,5 +68,23 @@ tap.test("basic storage mutation", t => {
 	.pipe(parser())
 	.pipe(minify(["main"], true))
 	.pipe(deparser())
+	.pipe(endStream);
+});
+
+tap.test("grouping removal test", t => {
+	let output = "";
+
+	const endStream = through((data) => {
+		output += data;
+	}, () => {
+		t.matchSnapshot(output, "output");
+		t.end();
+	});
+
+	fs.createReadStream(testGLSL)
+	.pipe(tokenizer())
+	.pipe(parser())
+	.pipe(minify())
+	.pipe(deparser(false))
 	.pipe(endStream);
 });
