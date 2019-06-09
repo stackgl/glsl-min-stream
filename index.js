@@ -7,6 +7,9 @@ var lang = require('cssauron-glsl')
   , through = require('through')
   , shortest = require('shortest')
 
+// recognize commutative + but not * as these are conditional
+var commutative_operators = ['+', '&&', '||']
+
 function minifier(safe_words, mutate_storages) {
   safe_words = safe_words || ['main']
 
@@ -59,6 +62,13 @@ function minifier(safe_words, mutate_storages) {
   }
 
   function is_unnecessary_group(node) {
-    return node.type === 'group' && node.children[0].lbp >= node.parent.lbp
+    if(node.type !== 'group') return false
+    if(node.children[0].lbp > node.parent.lbp) return true
+    if(node.children[0].lbp === node.parent.lbp) {
+      for(var i = 0; i < commutative_operators.length; i++) {
+        if(node.parent.data === commutative_operators[i] && node.children[0].data === commutative_operators[i]) return true
+      }
+    }
+    return false
   }
 }
