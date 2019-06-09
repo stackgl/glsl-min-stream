@@ -4,7 +4,7 @@
   "description": "through stream that transforms glsl-parser AST nodes and rewrites variables into shorter forms",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,11 @@
     "shortest": "0.0.0",
     "through": "~1.1.2",
     "cssauron-glsl": "X.X.X"
+  },
+  "devDependencies": {
+    "glsl-deparser": "^1.0.0",
+    "glsl-parser": "^2.0.1",
+    "glsl-tokenizer": "^2.1.5",
+    "tap": "^14.2.2"
   }
 }
