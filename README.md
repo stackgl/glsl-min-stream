@@ -4,7 +4,7 @@ Transform [glsl-parser](https://github.com/chrisdickinson/glsl-parser.git) AST n
 on-the-fly by renaming variables into shorter forms.
 
 ```javascript
-var tokenizer = require('glsl-tokenizer')
+var tokenizer = require('glsl-tokenizer/stream')
   , parser = require('glsl-parser')
   , deparser = require('glsl-deparser')
   , minify = require('./index')
