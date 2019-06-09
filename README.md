@@ -1,3 +1,5 @@
+![NPM](https://img.shields.io/npm/l/glsl-min-stream.svg) ![npm](https://img.shields.io/npm/v/glsl-min-stream.svg) ![npm](https://img.shields.io/npm/dm/glsl-min-stream.svg) [![Build Status](https://travis-ci.org/stackgl/glsl-min-stream.svg?branch=master)](https://travis-ci.org/stackgl/glsl-min-stream) [![Coverage Status](https://coveralls.io/repos/github/stackgl/glsl-min-stream/badge.svg?branch=master)](https://coveralls.io/github/stackgl/glsl-min-stream?branch=master)
+
 # glsl-min-stream
 
 Transform [glsl-parser](https://github.com/chrisdickinson/glsl-parser.git) AST nodes
@@ -34,13 +36,7 @@ Run `npm test` to run tests
 
 ---
 
-When adding a code change that differs the output, make sure to run tap with snapshots:
-
-```
-npm run test -- --snapshot
-```
-
-This will regenerate the tap-snapshot files. Make sure to commit those along with other code and test changes.
+When adding a code change that differs the output, make sure to run tap with snapshots by running `npm run test -- --snapshot`. This will regenerate the tap-snapshot files. Make sure to commit those along with other code and test changes.
 
 # License
 
