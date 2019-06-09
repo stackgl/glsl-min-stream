@@ -26,10 +26,12 @@ function minifier(safe_words, mutate_storages) {
     // remove unnecessary grouping operators
     if(is_unnecessary_group(node)) return
 
-    if(node.parent) for(var current = node.parent; current.parent; current = current.parent) {
-      if(is_unnecessary_group(current)) {
-        current.parent.children[current.parent.children.indexOf(current)] = current.children[0]
-        current.children[0].parent = current.parent
+    if(node.parent) {
+      for(var current = node.parent; current.parent; current = current.parent) {
+        if(is_unnecessary_group(current)) {
+          current.parent.children[current.parent.children.indexOf(current)] = current.children[0]
+          current.children[0].parent = current.parent
+        }
       }
     }
 
