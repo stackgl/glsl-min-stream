@@ -27,7 +27,7 @@ tap.test("basic", t => {
 	.pipe(tokenizer())
 	.pipe(parser())
 	.pipe(minify())
-	.pipe(deparser(false))
+	.pipe(deparser())
 	.pipe(endStream);
 });
 
@@ -47,7 +47,7 @@ tap.test("basic safe words", t => {
 	.pipe(tokenizer())
 	.pipe(parser())
 	.pipe(minify(["main", "PI"]))
-	.pipe(deparser(false))
+	.pipe(deparser())
 	.pipe(endStream);
 });
 
