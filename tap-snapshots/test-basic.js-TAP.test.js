@@ -724,3 +724,14 @@ gl_FragColor = vec4((vec3(1.) * bA + vec3(1.) * bB + bC * vec3(1.)) * vec3(.5), 
   }
 }
 `
+
+exports[`test/basic.js TAP decimals starting or ending with 0 > output 1`] = `
+
+float a = .0;
+float b = 0.;
+float c = .0;
+float d = 1.;
+float e = 1.;
+float f = .1;
+float g = .01;
+`
