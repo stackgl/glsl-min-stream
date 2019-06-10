@@ -8,6 +8,7 @@ const fs = require("fs");
 const path = require("path");
 const through = require("through");
 
+const zeroGLSL = path.resolve(__dirname, "./zero-decimals.glsl");
 const workingGLSL = path.resolve(__dirname, "./working.glsl");
 const vecGLSL = path.resolve(__dirname, "./vec-shorthand.glsl");
 
@@ -64,6 +65,24 @@ tap.test("basic storage mutation", t => {
 	});
 
 	fs.createReadStream(workingGLSL)
+	.pipe(tokenizer())
+	.pipe(parser())
+	.pipe(minify(["main"], true))
+	.pipe(deparser())
+	.pipe(endStream);
+});
+
+tap.test("decimals starting or ending with 0", t => {
+	let output = "";
+
+	const endStream = through((data) => {
+		output += data;
+	}, () => {
+		t.matchSnapshot(output, "output");
+		t.end();
+	});
+
+	fs.createReadStream(zeroGLSL)
 	.pipe(tokenizer())
 	.pipe(parser())
 	.pipe(minify(["main"], true))

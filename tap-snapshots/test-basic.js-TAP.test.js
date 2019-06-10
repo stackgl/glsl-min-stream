@@ -17,7 +17,7 @@ const int a = 6;
 
 #define SHADOWS_ENABLED 1
 
-const float b = 0.8;
+const float b = .8;
 #define REVERSE_TRI1 0
 
 #define REVERSE_TRI0 0
@@ -35,8 +35,8 @@ uniform float time;
 uniform vec2 mouse;
 uniform sampler2D backbuffer;
 float c = 3.14159265;
-float d = 0.0;
-float e = 0.0;
+float d = .0;
+float e = .0;
 const int f = 6;
 vec3 g[f];
 vec3 h[f];
@@ -47,7 +47,7 @@ float l(vec3);
 float l(vec3 m) {
   vec3 n = vec3(h[0][0], 0, h[0][2]);
   m += n;
-  float o = 1.0;
+  float o = 1.;
   for(int p = 0; p < a; p++) {
     mat3 q = j[0];
     vec3 r = h[0];
@@ -79,13 +79,13 @@ float l(vec3 m) {
     vec3 C = A - k[v];
     vec3 D = cross(y, B[v]);
     float E = dot(C, D) / dot(D, D);
-    if(E > 0.0) {
+    if(E > .0) {
       A -= D * E;
       float F = dot(C, B[v]) / dot(B[v], B[v]);
-      if(F < 0.0)
+      if(F < .0)
         A -= B[v] * F;
-      else if(F > 1.0)
-        A -= B[v] * (F - 1.0);
+      else if(F > 1.)
+        A -= B[v] * (F - 1.);
       
       break;
     }
@@ -95,57 +95,57 @@ float l(vec3 m) {
 #if SHADOWS_ENABLED==1
 
 float G(vec3 m, vec3 H, float I) {
-  float J = 2.0 * I;
-  float K = 1.0;
+  float J = 2. * I;
+  float K = 1.;
   for(int L = 0; L < 30; L++) {
     vec3 M = m + J * H;
     float E = l(M);
     if(E < I)
-      return 1.0;
-    K = min(K, 4.0 * (E / J));
+      return 1.;
+    K = min(K, 4. * (E / J));
     J += E;
   }
-  return 1.0 - K;
+  return 1. - K;
 }
 #endif
 
 void N() {
-  e = 2.3 * (mouse.y - 0.5);
-  float O = 0.6;
+  e = 2.3 * (mouse.y - .5);
+  float O = .6;
   if(e > O)
     e = O;
   else if(e < -O)
     e = -O;
   
-  d = c / 2.0;
+  d = c / 2.;
   for(int v = 0; v < 5; v++) {
     float P = cos(d);
     float Q = sin(d);
-    float R = 1.0 / (4.0 * e * e + Q * Q);
-    d = atan(sqrt((1.0 + 2.0 * P + P * P) * R)) + atan(sqrt((1.0 - 2.0 * P + P * P) * R));
+    float R = 1. / (4. * e * e + Q * Q);
+    d = atan(sqrt((1. + 2. * P + P * P) * R)) + atan(sqrt((1. - 2. * P + P * P) * R));
   }
   float P = cos(d);
   float Q = sin(d);
   vec3 S = vec3(1, 0, 0);
   vec3 T = vec3(P, 0, Q);
   vec3 U = S + T;
-  vec3 V = U * 0.5 + vec3(0, e, 0);
+  vec3 V = U * .5 + vec3(0, e, 0);
   h[0] = h[1] = h[2] = h[3] = V;
   h[4] = T;
   h[5] = S;
-  g[0] = (S + V) / 3.0;
-  g[1] = (T + V) / 3.0;
-  g[2] = (S + V + U) / 3.0;
-  g[3] = (T + V + U) / 3.0;
+  g[0] = (S + V) / 3.;
+  g[1] = (T + V) / 3.;
+  g[2] = (S + V + U) / 3.;
+  g[3] = (T + V + U) / 3.;
   float W = length(V);
   float X = length(vec3(1, 0, 0) - V);
-  float s = 1.0 / W + 1.0 / X;
+  float s = 1. / W + 1. / X;
   i[0] = i[1] = i[2] = i[3] = s;
   i[4] = X * s;
   i[5] = W * s;
   k[0] = vec3(0);
-  k[1] = S * (1.0 + X / W);
-  k[2] = T * (1.0 + W / X);
+  k[1] = S * (1. + X / W);
+  k[2] = T * (1. + W / X);
   j[0][0] = normalize(S - V);
   j[0][1] = -normalize(cross(j[0][0], V));
   j[0][2] = -cross(j[0][0], j[0][1]);
@@ -165,55 +165,55 @@ void N() {
   j[4] = mat3(i[4]);
   j[5] = mat3(i[5]);
 #if REVERSE_TRI0==1
-j[0][1] *= -1.0;
+j[0][1] *= -1.;
 #endif
 #if REVERSE_TRI1==1
-j[1][1] *= -1.0;
+j[1][1] *= -1.;
 #endif
 #if REVERSE_TRI2==1
-j[2][1] *= -1.0;
+j[2][1] *= -1.;
 #endif
 #if REVERSE_TRI3==1
-j[3][1] *= -1.0;
+j[3][1] *= -1.;
 #endif
 #if REVERSE_TRI4==1
-j[4][1] *= -1.0;
+j[4][1] *= -1.;
 #endif
 #if REVERSE_TRI5==1
-j[5][1] *= -1.0;
+j[5][1] *= -1.;
 #endif
 vec3 D = cross(U - S, vec3(0, 1, 0));
-  g[5] = g[2] + 2.0 * D * dot(D, S - g[2]) / dot(D, D);
+  g[5] = g[2] + 2. * D * dot(D, S - g[2]) / dot(D, D);
   D = cross(U - T, vec3(0, 1, 0));
-  g[4] = g[3] + 2.0 * D * dot(D, T - g[3]) / dot(D, D);
+  g[4] = g[3] + 2. * D * dot(D, T - g[3]) / dot(D, D);
 }
 void main(void) {
   N();
-  vec2 Y = 0.5 * (-1.0 + 2.0 * gl_FragCoord.xy / resolution.xy);
-  float Z = 0.2 * time;
-  if(e < 0.0)
-    Z += c / 2.0;
+  vec2 Y = .5 * (-1. + 2. * gl_FragCoord.xy / resolution.xy);
+  float Z = .2 * time;
+  if(e < .0)
+    Z += c / 2.;
   float ba = sin(Z);
   float bb = cos(Z);
   mat3 bc = mat3(vec3(bb, 0, ba), vec3(0, 1, 0), vec3(-ba, 0, bb));
   vec3 bd = vec3(0, 1, 0);
   vec3 be = vec3(0);
-  float bf = 0.0;
-  float bg = 0.5 * c / 2.01;
-  vec3 bh = bc * vec3(cos(bg), sin(bg), 0.0) * 2.0;
+  float bf = .0;
+  float bg = .5 * c / 2.01;
+  vec3 bh = bc * vec3(cos(bg), sin(bg), .0) * 2.;
   vec3 bi = normalize(be - bh);
   vec3 bj = normalize(cross(bd, bi));
   vec3 bk = cross(bi, bj);
   vec3 bl = (bh + bi);
   vec3 bm = bl + Y.x * bj * resolution.x / resolution.y + Y.y * bk;
   vec3 bn = normalize(bm - bh);
-  const vec3 bo = vec3(0.000001, 0, 0);
-  const float bp = 3.0;
-  float K = 0.0;
+  const vec3 bo = vec3(.000001, 0, 0);
+  const float bp = 3.;
+  float K = .0;
   vec3 bq, M, br;
-  float bs = 0.80;
+  float bs = .80;
   for(int v = 0; v < 46; v++) {
-    bs += K * 0.8;
+    bs += K * .8;
     M = bh + bn * bs;
     K = l(M);
     if(K < .00065 || bs > bp)
@@ -223,24 +223,24 @@ void main(void) {
   if(bs < bp) {
     br = normalize(vec3(K - l(M - bo.xyy), K - l(M - bo.yxy), K - l(M - bo.yyx)));
     vec3 bt = normalize(bh - M);
-    vec3 bu = bc * normalize(vec3(-1.0, -2.0, 1.5));
-    vec3 bv = bu - 2.0 * dot(br, bu) * br;
-    float K = max(0.0, dot(bt, -bv));
-    float bw = max(0.0, dot(-br, bu)) * 0.60;
-    float bx = 1.0;
-    float by = 0.0;
+    vec3 bu = bc * normalize(vec3(-1., -2., 1.5));
+    vec3 bv = bu - 2. * dot(br, bu) * br;
+    float K = max(.0, dot(bt, -bv));
+    float bw = max(.0, dot(-br, bu)) * .60;
+    float bx = 1.;
+    float by = .0;
 #if SHADOWS_ENABLED==1
-float I = 0.001;
-    if(b > 0.0) {
+float I = .001;
+    if(b > .0) {
       float bz = G(M + br * I, -bu, I);
-      bx = mix(bx, 0.0, b * bz);
-      bw = mix(bw, 0.0, b * bz);
-      if(bz > 0.0)
-        by = 0.0;
+      bx = mix(bx, .0, b * bz);
+      bw = mix(bw, .0, b * bz);
+      if(bz > .0)
+        by = .0;
       
     }
 #endif
-gl_FragColor = vec4((vec3(1.0) * bw + vec3(1.0) * bx + by * vec3(1.0)) * vec3(0.5), 1.0);
+gl_FragColor = vec4((vec3(1.) * bw + vec3(1.) * bx + by * vec3(1.)) * vec3(.5), 1.);
   }
 }
 `
@@ -257,7 +257,7 @@ const int a = 6;
 
 #define SHADOWS_ENABLED 1
 
-const float b = 0.8;
+const float b = .8;
 #define REVERSE_TRI1 0
 
 #define REVERSE_TRI0 0
@@ -275,8 +275,8 @@ uniform float time;
 uniform vec2 mouse;
 uniform sampler2D backbuffer;
 float PI = 3.14159265;
-float c = 0.0;
-float d = 0.0;
+float c = .0;
+float d = .0;
 const int e = 6;
 vec3 f[e];
 vec3 g[e];
@@ -287,7 +287,7 @@ float k(vec3);
 float k(vec3 l) {
   vec3 m = vec3(g[0][0], 0, g[0][2]);
   l += m;
-  float n = 1.0;
+  float n = 1.;
   for(int o = 0; o < a; o++) {
     mat3 p = i[0];
     vec3 q = g[0];
@@ -319,13 +319,13 @@ float k(vec3 l) {
     vec3 B = z - j[u];
     vec3 C = cross(x, A[u]);
     float D = dot(B, C) / dot(C, C);
-    if(D > 0.0) {
+    if(D > .0) {
       z -= C * D;
       float E = dot(B, A[u]) / dot(A[u], A[u]);
-      if(E < 0.0)
+      if(E < .0)
         z -= A[u] * E;
-      else if(E > 1.0)
-        z -= A[u] * (E - 1.0);
+      else if(E > 1.)
+        z -= A[u] * (E - 1.);
       
       break;
     }
@@ -335,57 +335,57 @@ float k(vec3 l) {
 #if SHADOWS_ENABLED==1
 
 float F(vec3 l, vec3 G, float H) {
-  float I = 2.0 * H;
-  float J = 1.0;
+  float I = 2. * H;
+  float J = 1.;
   for(int K = 0; K < 30; K++) {
     vec3 L = l + I * G;
     float D = k(L);
     if(D < H)
-      return 1.0;
-    J = min(J, 4.0 * (D / I));
+      return 1.;
+    J = min(J, 4. * (D / I));
     I += D;
   }
-  return 1.0 - J;
+  return 1. - J;
 }
 #endif
 
 void M() {
-  d = 2.3 * (mouse.y - 0.5);
-  float N = 0.6;
+  d = 2.3 * (mouse.y - .5);
+  float N = .6;
   if(d > N)
     d = N;
   else if(d < -N)
     d = -N;
   
-  c = PI / 2.0;
+  c = PI / 2.;
   for(int u = 0; u < 5; u++) {
     float O = cos(c);
     float P = sin(c);
-    float Q = 1.0 / (4.0 * d * d + P * P);
-    c = atan(sqrt((1.0 + 2.0 * O + O * O) * Q)) + atan(sqrt((1.0 - 2.0 * O + O * O) * Q));
+    float Q = 1. / (4. * d * d + P * P);
+    c = atan(sqrt((1. + 2. * O + O * O) * Q)) + atan(sqrt((1. - 2. * O + O * O) * Q));
   }
   float O = cos(c);
   float P = sin(c);
   vec3 R = vec3(1, 0, 0);
   vec3 S = vec3(O, 0, P);
   vec3 T = R + S;
-  vec3 U = T * 0.5 + vec3(0, d, 0);
+  vec3 U = T * .5 + vec3(0, d, 0);
   g[0] = g[1] = g[2] = g[3] = U;
   g[4] = S;
   g[5] = R;
-  f[0] = (R + U) / 3.0;
-  f[1] = (S + U) / 3.0;
-  f[2] = (R + U + T) / 3.0;
-  f[3] = (S + U + T) / 3.0;
+  f[0] = (R + U) / 3.;
+  f[1] = (S + U) / 3.;
+  f[2] = (R + U + T) / 3.;
+  f[3] = (S + U + T) / 3.;
   float V = length(U);
   float W = length(vec3(1, 0, 0) - U);
-  float r = 1.0 / V + 1.0 / W;
+  float r = 1. / V + 1. / W;
   h[0] = h[1] = h[2] = h[3] = r;
   h[4] = W * r;
   h[5] = V * r;
   j[0] = vec3(0);
-  j[1] = R * (1.0 + W / V);
-  j[2] = S * (1.0 + V / W);
+  j[1] = R * (1. + W / V);
+  j[2] = S * (1. + V / W);
   i[0][0] = normalize(R - U);
   i[0][1] = -normalize(cross(i[0][0], U));
   i[0][2] = -cross(i[0][0], i[0][1]);
@@ -405,55 +405,55 @@ void M() {
   i[4] = mat3(h[4]);
   i[5] = mat3(h[5]);
 #if REVERSE_TRI0==1
-i[0][1] *= -1.0;
+i[0][1] *= -1.;
 #endif
 #if REVERSE_TRI1==1
-i[1][1] *= -1.0;
+i[1][1] *= -1.;
 #endif
 #if REVERSE_TRI2==1
-i[2][1] *= -1.0;
+i[2][1] *= -1.;
 #endif
 #if REVERSE_TRI3==1
-i[3][1] *= -1.0;
+i[3][1] *= -1.;
 #endif
 #if REVERSE_TRI4==1
-i[4][1] *= -1.0;
+i[4][1] *= -1.;
 #endif
 #if REVERSE_TRI5==1
-i[5][1] *= -1.0;
+i[5][1] *= -1.;
 #endif
 vec3 C = cross(T - R, vec3(0, 1, 0));
-  f[5] = f[2] + 2.0 * C * dot(C, R - f[2]) / dot(C, C);
+  f[5] = f[2] + 2. * C * dot(C, R - f[2]) / dot(C, C);
   C = cross(T - S, vec3(0, 1, 0));
-  f[4] = f[3] + 2.0 * C * dot(C, S - f[3]) / dot(C, C);
+  f[4] = f[3] + 2. * C * dot(C, S - f[3]) / dot(C, C);
 }
 void main(void) {
   M();
-  vec2 X = 0.5 * (-1.0 + 2.0 * gl_FragCoord.xy / resolution.xy);
-  float Y = 0.2 * time;
-  if(d < 0.0)
-    Y += PI / 2.0;
+  vec2 X = .5 * (-1. + 2. * gl_FragCoord.xy / resolution.xy);
+  float Y = .2 * time;
+  if(d < .0)
+    Y += PI / 2.;
   float Z = sin(Y);
   float ba = cos(Y);
   mat3 bb = mat3(vec3(ba, 0, Z), vec3(0, 1, 0), vec3(-Z, 0, ba));
   vec3 bc = vec3(0, 1, 0);
   vec3 bd = vec3(0);
-  float be = 0.0;
-  float bf = 0.5 * PI / 2.01;
-  vec3 bg = bb * vec3(cos(bf), sin(bf), 0.0) * 2.0;
+  float be = .0;
+  float bf = .5 * PI / 2.01;
+  vec3 bg = bb * vec3(cos(bf), sin(bf), .0) * 2.;
   vec3 bh = normalize(bd - bg);
   vec3 bi = normalize(cross(bc, bh));
   vec3 bj = cross(bh, bi);
   vec3 bk = (bg + bh);
   vec3 bl = bk + X.x * bi * resolution.x / resolution.y + X.y * bj;
   vec3 bm = normalize(bl - bg);
-  const vec3 bn = vec3(0.000001, 0, 0);
-  const float bo = 3.0;
-  float J = 0.0;
+  const vec3 bn = vec3(.000001, 0, 0);
+  const float bo = 3.;
+  float J = .0;
   vec3 bp, L, bq;
-  float br = 0.80;
+  float br = .80;
   for(int u = 0; u < 46; u++) {
-    br += J * 0.8;
+    br += J * .8;
     L = bg + bm * br;
     J = k(L);
     if(J < .00065 || br > bo)
@@ -463,24 +463,24 @@ void main(void) {
   if(br < bo) {
     bq = normalize(vec3(J - k(L - bn.xyy), J - k(L - bn.yxy), J - k(L - bn.yyx)));
     vec3 bs = normalize(bg - L);
-    vec3 bt = bb * normalize(vec3(-1.0, -2.0, 1.5));
-    vec3 bu = bt - 2.0 * dot(bq, bt) * bq;
-    float J = max(0.0, dot(bs, -bu));
-    float bv = max(0.0, dot(-bq, bt)) * 0.60;
-    float bw = 1.0;
-    float bx = 0.0;
+    vec3 bt = bb * normalize(vec3(-1., -2., 1.5));
+    vec3 bu = bt - 2. * dot(bq, bt) * bq;
+    float J = max(.0, dot(bs, -bu));
+    float bv = max(.0, dot(-bq, bt)) * .60;
+    float bw = 1.;
+    float bx = .0;
 #if SHADOWS_ENABLED==1
-float H = 0.001;
-    if(b > 0.0) {
+float H = .001;
+    if(b > .0) {
       float by = F(L + bq * H, -bt, H);
-      bw = mix(bw, 0.0, b * by);
-      bv = mix(bv, 0.0, b * by);
-      if(by > 0.0)
-        bx = 0.0;
+      bw = mix(bw, .0, b * by);
+      bv = mix(bv, .0, b * by);
+      if(by > .0)
+        bx = .0;
       
     }
 #endif
-gl_FragColor = vec4((vec3(1.0) * bv + vec3(1.0) * bw + bx * vec3(1.0)) * vec3(0.5), 1.0);
+gl_FragColor = vec4((vec3(1.) * bv + vec3(1.) * bw + bx * vec3(1.)) * vec3(.5), 1.);
   }
 }
 `
@@ -497,7 +497,7 @@ const int a = 6;
 
 #define SHADOWS_ENABLED 1
 
-const float b = 0.8;
+const float b = .8;
 #define REVERSE_TRI1 0
 
 #define REVERSE_TRI0 0
@@ -515,8 +515,8 @@ uniform float d;
 uniform vec2 e;
 uniform sampler2D f;
 float g = 3.14159265;
-float h = 0.0;
-float i = 0.0;
+float h = .0;
+float i = .0;
 const int j = 6;
 vec3 k[j];
 vec3 l[j];
@@ -527,7 +527,7 @@ float p(vec3);
 float p(vec3 q) {
   vec3 r = vec3(l[0][0], 0, l[0][2]);
   q += r;
-  float s = 1.0;
+  float s = 1.;
   for(int t = 0; t < a; t++) {
     mat3 u = n[0];
     vec3 v = l[0];
@@ -559,13 +559,13 @@ float p(vec3 q) {
     vec3 G = E - o[z];
     vec3 H = cross(C, F[z]);
     float I = dot(G, H) / dot(H, H);
-    if(I > 0.0) {
+    if(I > .0) {
       E -= H * I;
       float J = dot(G, F[z]) / dot(F[z], F[z]);
-      if(J < 0.0)
+      if(J < .0)
         E -= F[z] * J;
-      else if(J > 1.0)
-        E -= F[z] * (J - 1.0);
+      else if(J > 1.)
+        E -= F[z] * (J - 1.);
       
       break;
     }
@@ -575,57 +575,57 @@ float p(vec3 q) {
 #if SHADOWS_ENABLED==1
 
 float K(vec3 q, vec3 L, float M) {
-  float N = 2.0 * M;
-  float O = 1.0;
+  float N = 2. * M;
+  float O = 1.;
   for(int P = 0; P < 30; P++) {
     vec3 Q = q + N * L;
     float I = p(Q);
     if(I < M)
-      return 1.0;
-    O = min(O, 4.0 * (I / N));
+      return 1.;
+    O = min(O, 4. * (I / N));
     N += I;
   }
-  return 1.0 - O;
+  return 1. - O;
 }
 #endif
 
 void R() {
-  i = 2.3 * (e.y - 0.5);
-  float S = 0.6;
+  i = 2.3 * (e.y - .5);
+  float S = .6;
   if(i > S)
     i = S;
   else if(i < -S)
     i = -S;
   
-  h = g / 2.0;
+  h = g / 2.;
   for(int z = 0; z < 5; z++) {
     float T = cos(h);
     float U = sin(h);
-    float V = 1.0 / (4.0 * i * i + U * U);
-    h = atan(sqrt((1.0 + 2.0 * T + T * T) * V)) + atan(sqrt((1.0 - 2.0 * T + T * T) * V));
+    float V = 1. / (4. * i * i + U * U);
+    h = atan(sqrt((1. + 2. * T + T * T) * V)) + atan(sqrt((1. - 2. * T + T * T) * V));
   }
   float T = cos(h);
   float U = sin(h);
   vec3 W = vec3(1, 0, 0);
   vec3 X = vec3(T, 0, U);
   vec3 Y = W + X;
-  vec3 Z = Y * 0.5 + vec3(0, i, 0);
+  vec3 Z = Y * .5 + vec3(0, i, 0);
   l[0] = l[1] = l[2] = l[3] = Z;
   l[4] = X;
   l[5] = W;
-  k[0] = (W + Z) / 3.0;
-  k[1] = (X + Z) / 3.0;
-  k[2] = (W + Z + Y) / 3.0;
-  k[3] = (X + Z + Y) / 3.0;
+  k[0] = (W + Z) / 3.;
+  k[1] = (X + Z) / 3.;
+  k[2] = (W + Z + Y) / 3.;
+  k[3] = (X + Z + Y) / 3.;
   float ba = length(Z);
   float bb = length(vec3(1, 0, 0) - Z);
-  float w = 1.0 / ba + 1.0 / bb;
+  float w = 1. / ba + 1. / bb;
   m[0] = m[1] = m[2] = m[3] = w;
   m[4] = bb * w;
   m[5] = ba * w;
   o[0] = vec3(0);
-  o[1] = W * (1.0 + bb / ba);
-  o[2] = X * (1.0 + ba / bb);
+  o[1] = W * (1. + bb / ba);
+  o[2] = X * (1. + ba / bb);
   n[0][0] = normalize(W - Z);
   n[0][1] = -normalize(cross(n[0][0], Z));
   n[0][2] = -cross(n[0][0], n[0][1]);
@@ -645,55 +645,55 @@ void R() {
   n[4] = mat3(m[4]);
   n[5] = mat3(m[5]);
 #if REVERSE_TRI0==1
-n[0][1] *= -1.0;
+n[0][1] *= -1.;
 #endif
 #if REVERSE_TRI1==1
-n[1][1] *= -1.0;
+n[1][1] *= -1.;
 #endif
 #if REVERSE_TRI2==1
-n[2][1] *= -1.0;
+n[2][1] *= -1.;
 #endif
 #if REVERSE_TRI3==1
-n[3][1] *= -1.0;
+n[3][1] *= -1.;
 #endif
 #if REVERSE_TRI4==1
-n[4][1] *= -1.0;
+n[4][1] *= -1.;
 #endif
 #if REVERSE_TRI5==1
-n[5][1] *= -1.0;
+n[5][1] *= -1.;
 #endif
 vec3 H = cross(Y - W, vec3(0, 1, 0));
-  k[5] = k[2] + 2.0 * H * dot(H, W - k[2]) / dot(H, H);
+  k[5] = k[2] + 2. * H * dot(H, W - k[2]) / dot(H, H);
   H = cross(Y - X, vec3(0, 1, 0));
-  k[4] = k[3] + 2.0 * H * dot(H, X - k[3]) / dot(H, H);
+  k[4] = k[3] + 2. * H * dot(H, X - k[3]) / dot(H, H);
 }
 void main(void) {
   R();
-  vec2 bc = 0.5 * (-1.0 + 2.0 * gl_FragCoord.xy / c.xy);
-  float bd = 0.2 * d;
-  if(i < 0.0)
-    bd += g / 2.0;
+  vec2 bc = .5 * (-1. + 2. * gl_FragCoord.xy / c.xy);
+  float bd = .2 * d;
+  if(i < .0)
+    bd += g / 2.;
   float be = sin(bd);
   float bf = cos(bd);
   mat3 bg = mat3(vec3(bf, 0, be), vec3(0, 1, 0), vec3(-be, 0, bf));
   vec3 bh = vec3(0, 1, 0);
   vec3 bi = vec3(0);
-  float bj = 0.0;
-  float bk = 0.5 * g / 2.01;
-  vec3 bl = bg * vec3(cos(bk), sin(bk), 0.0) * 2.0;
+  float bj = .0;
+  float bk = .5 * g / 2.01;
+  vec3 bl = bg * vec3(cos(bk), sin(bk), .0) * 2.;
   vec3 bm = normalize(bi - bl);
   vec3 bn = normalize(cross(bh, bm));
   vec3 bo = cross(bm, bn);
   vec3 bp = (bl + bm);
   vec3 bq = bp + bc.x * bn * c.x / c.y + bc.y * bo;
   vec3 br = normalize(bq - bl);
-  const vec3 bs = vec3(0.000001, 0, 0);
-  const float bt = 3.0;
-  float O = 0.0;
+  const vec3 bs = vec3(.000001, 0, 0);
+  const float bt = 3.;
+  float O = .0;
   vec3 bu, Q, bv;
-  float bw = 0.80;
+  float bw = .80;
   for(int z = 0; z < 46; z++) {
-    bw += O * 0.8;
+    bw += O * .8;
     Q = bl + br * bw;
     O = p(Q);
     if(O < .00065 || bw > bt)
@@ -703,47 +703,58 @@ void main(void) {
   if(bw < bt) {
     bv = normalize(vec3(O - p(Q - bs.xyy), O - p(Q - bs.yxy), O - p(Q - bs.yyx)));
     vec3 bx = normalize(bl - Q);
-    vec3 by = bg * normalize(vec3(-1.0, -2.0, 1.5));
-    vec3 bz = by - 2.0 * dot(bv, by) * bv;
-    float O = max(0.0, dot(bx, -bz));
-    float bA = max(0.0, dot(-bv, by)) * 0.60;
-    float bB = 1.0;
-    float bC = 0.0;
+    vec3 by = bg * normalize(vec3(-1., -2., 1.5));
+    vec3 bz = by - 2. * dot(bv, by) * bv;
+    float O = max(.0, dot(bx, -bz));
+    float bA = max(.0, dot(-bv, by)) * .60;
+    float bB = 1.;
+    float bC = .0;
 #if SHADOWS_ENABLED==1
-float M = 0.001;
-    if(b > 0.0) {
+float M = .001;
+    if(b > .0) {
       float bD = K(Q + bv * M, -by, M);
-      bB = mix(bB, 0.0, b * bD);
-      bA = mix(bA, 0.0, b * bD);
-      if(bD > 0.0)
-        bC = 0.0;
+      bB = mix(bB, .0, b * bD);
+      bA = mix(bA, .0, b * bD);
+      if(bD > .0)
+        bC = .0;
       
     }
 #endif
-gl_FragColor = vec4((vec3(1.0) * bA + vec3(1.0) * bB + bC * vec3(1.0)) * vec3(0.5), 1.0);
+gl_FragColor = vec4((vec3(1.) * bA + vec3(1.) * bB + bC * vec3(1.)) * vec3(.5), 1.);
   }
 }
 `
 
+exports[`test/basic.js TAP decimals starting or ending with 0 > output 1`] = `
+
+float a = .0;
+float b = 0.;
+float c = .0;
+float d = 1.;
+float e = 1.;
+float f = .1;
+float g = .01;
+`
+
 exports[`test/basic.js TAP vec shorthand > output 1`] = `
 
-vec2 vec2Long = vec2(0.0, 1.0);
-vec2 vec2Short = vec2(0.0);
-bvec2 bvec2Long = bvec2(0.0, 1.0);
-bvec2 bvec2Short = bvec2(0.0);
-ivec2 ivec2Long = ivec2(0.0, 1.0);
-ivec2 ivec2Short = ivec2(0.0);
-vec3 vec3Long = vec3(0.0, 1.0, 1.0);
-vec3 vec3Short = vec3(0.0);
-bvec3 bvec3Long = bvec3(0.0, 1.0, 1.0, 1.0);
-bvec3 bvec3Short = bvec3(0.0);
-ivec3 ivec3Long = ivec3(0.0, 1.0, 1.0, 1.0);
-ivec3 ivec3Short = ivec3(0.0);
-vec4 vec4Long = vec4(0.0, 1.0, 1.0, 1.0);
-vec4 vec4Short = vec4(0.0);
-bvec4 bvec4Long = bvec4(0.0, 1.0, 1.0, 1.0);
-bvec4 bvec4Short = bvec4(0.0);
-ivec4 ivec4Long = ivec4(0.0, 1.0, 1.0, 1.0);
-ivec4 ivec4Short = ivec4(0.0);
-ivec4 a = ivec4(vec2(0.0, 1.0), vec2(0.0, 1.0));
+vec2 vec2Long = vec2(.0, 1.);
+vec2 vec2Short = vec2(.0);
+bvec2 bvec2Long = bvec2(.0, 1.);
+bvec2 bvec2Short = bvec2(.0);
+ivec2 ivec2Long = ivec2(.0, 1.);
+ivec2 ivec2Short = ivec2(.0);
+vec3 vec3Long = vec3(.0, 1., 1.);
+vec3 vec3Short = vec3(.0);
+bvec3 bvec3Long = bvec3(.0, 1., 1., 1.);
+bvec3 bvec3Short = bvec3(.0);
+ivec3 ivec3Long = ivec3(.0, 1., 1., 1.);
+ivec3 ivec3Short = ivec3(.0);
+vec4 vec4Long = vec4(.0, 1., 1., 1.);
+vec4 vec4Short = vec4(.0);
+bvec4 bvec4Long = bvec4(.0, 1., 1., 1.);
+bvec4 bvec4Short = bvec4(.0);
+ivec4 ivec4Long = ivec4(.0, 1., 1., 1.);
+ivec4 ivec4Short = ivec4(.0);
+ivec4 a = ivec4(vec2(.0, 1.), vec2(.0, 1.));
 `
