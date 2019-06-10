@@ -9,6 +9,7 @@ const path = require("path");
 const through = require("through");
 
 const workingGLSL = path.resolve(__dirname, "./working.glsl");
+const vecGLSL = path.resolve(__dirname, "./vec-shorthand.glsl");
 
 tap.test("basic", t => {
 	let output = "";
@@ -66,6 +67,50 @@ tap.test("basic storage mutation", t => {
 	.pipe(tokenizer())
 	.pipe(parser())
 	.pipe(minify(["main"], true))
+	.pipe(deparser())
+	.pipe(endStream);
+});
+
+tap.test("vec shorthand", t => {
+	const types = ["", "b", "i"]
+	.map(prefix => [2,3,4].map(size => `${prefix}vec${size}`))
+	.reduce((a, b) => a.concat(b));
+
+	const variableNames = types
+	.map(type => ["Short", "Long"].map(suffix => `${type}${suffix}`))
+	.reduce((a, b) => a.concat(b));
+
+	const safewords = [
+		"main",
+		...variableNames,
+	];
+
+	let output = "";
+
+	const endStream = through((data) => {
+		output += data;
+	}, () => {
+		t.matchSnapshot(output, "output");
+
+		t.ok(
+			variableNames
+			.filter(name => name.endsWith("Long"))
+			.every(name => output.includes(`${name} = ${name.replace("Long", "")}(0.0, 1.0`))
+		);
+
+		t.ok(
+			variableNames
+			.filter(name => name.endsWith("Short"))
+			.every(name => output.includes(`${name} = ${name.replace("Short", "")}(0.0)`))
+		);
+
+		t.end();
+	});
+
+	fs.createReadStream(vecGLSL)
+	.pipe(tokenizer())
+	.pipe(parser())
+	.pipe(minify(safewords))
 	.pipe(deparser())
 	.pipe(endStream);
 });
