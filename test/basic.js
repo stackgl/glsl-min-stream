@@ -85,6 +85,6 @@ tap.test("grouping removal test", t => {
 	.pipe(tokenizer())
 	.pipe(parser())
 	.pipe(minify())
-	.pipe(deparser(false))
+	.pipe(deparser())
 	.pipe(endStream);
 });
