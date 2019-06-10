@@ -745,4 +745,5 @@ bvec4 bvec4Long = bvec4(0.0, 1.0, 1.0, 1.0);
 bvec4 bvec4Short = bvec4(0.0);
 ivec4 ivec4Long = ivec4(0.0, 1.0, 1.0, 1.0);
 ivec4 ivec4Short = ivec4(0.0);
+ivec4 a = ivec4(vec2(0.0, 1.0), vec2(0.0, 1.0));
 `

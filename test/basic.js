@@ -95,14 +95,18 @@ tap.test("vec shorthand", t => {
 		t.ok(
 			variableNames
 			.filter(name => name.endsWith("Long"))
-			.every(name => output.includes(`${name} = ${name.replace("Long", "")}(0.0, 1.0`))
+			.every(name => output.includes(`${name} = ${name.replace("Long", "")}(0.0, 1.0`)),
+			"does not retain differing scalars"
 		);
 
 		t.ok(
 			variableNames
 			.filter(name => name.endsWith("Short"))
-			.every(name => output.includes(`${name} = ${name.replace("Short", "")}(0.0)`))
+			.every(name => output.includes(`${name} = ${name.replace("Short", "")}(0.0)`)),
+			"does not shorten identical scalars"
 		);
+
+		t.ok(output.includes("ivec4(vec2(0.0, 1.0), vec2(0.0, 1.0))"), "does not preserve vectors in initalizer");
 
 		t.end();
 	});
