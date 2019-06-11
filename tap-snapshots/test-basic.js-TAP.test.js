@@ -744,6 +744,24 @@ bool c = 1. && true && true;
 bool d = 0. || false || true;
 `
 
+exports[`test/basic.js TAP mat shorthand > output 1`] = `
+
+mat2 mat2Long = mat2(1., 1., 1., 1.);
+mat2 mat2Short = mat2(1.);
+mat3 mat3Long = mat3(1., 1., 1., 1., 1., 1., 1., 1., 1.);
+mat3 mat3Short = mat3(1.);
+mat4 mat4Long = mat4(1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.);
+mat4 mat4Short = mat4(1.);
+mat2 a = mat2(1., .0, .0, .0);
+float b = 1.;
+float c = .0;
+mat2 d = mat2(b, c, c, b);
+vec3 e = vec3(1, 0, 0);
+vec3 f = vec3(0, 1, 0);
+vec3 g = vec3(0, 0, 1);
+mat3 h = mat3(e, f, g);
+`
+
 exports[`test/basic.js TAP vec shorthand > output 1`] = `
 
 vec2 vec2Long = vec2(.0, 1.);

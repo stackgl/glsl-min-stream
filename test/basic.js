@@ -12,6 +12,7 @@ const zeroGLSL = path.resolve(__dirname, "./zero-decimals.glsl");
 const commutativeGLSL = path.resolve(__dirname, "./commutative-operators.glsl");
 const workingGLSL = path.resolve(__dirname, "./working.glsl");
 const vecGLSL = path.resolve(__dirname, "./vec-shorthand.glsl");
+const matGLSL = path.resolve(__dirname, "./mat-shorthand.glsl");
 
 tap.test("basic", t => {
 	let output = "";
@@ -153,6 +154,50 @@ tap.test("grouping removal test", t => {
 	.pipe(tokenizer())
 	.pipe(parser())
 	.pipe(minify())
+	.pipe(deparser())
+	.pipe(endStream);
+});
+
+tap.test("mat shorthand", t => {
+	const types = [2,3,4].map(size => `mat${size}`);
+
+	const variableNames = types
+	.map(type => ["Short", "Long"].map(suffix => `${type}${suffix}`))
+	.reduce((a, b) => a.concat(b));
+
+	const safewords = [
+		"main",
+		...variableNames,
+	];
+
+	let output = "";
+
+	const endStream = through((data) => {
+		output += data;
+	}, () => {
+		t.matchSnapshot(output, "output");
+
+		t.ok(
+			variableNames
+			.filter(name => name.endsWith("Long"))
+			.every(name => output.includes(`${name} = ${name.replace("Long", "")}(1., 1.`)),
+			"does not retain differing scalars"
+		);
+
+		t.ok(
+			variableNames
+			.filter(name => name.endsWith("Short"))
+			.every(name => output.includes(`${name} = ${name.replace("Short", "")}(1.)`)),
+			"does not shorten identical scalars"
+		);
+
+		t.end();
+	});
+
+	fs.createReadStream(matGLSL)
+	.pipe(tokenizer())
+	.pipe(parser())
+	.pipe(minify(safewords))
 	.pipe(deparser())
 	.pipe(endStream);
 });

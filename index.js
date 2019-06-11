@@ -42,6 +42,10 @@ function minifier(safe_words, mutate_storages) {
     if(node.parent && is_redundant_vector_literal(node.parent) && node.parent.children.indexOf(node) > 1) return
     if(is_redundant_vector_literal(node)) node.children = node.children.slice(0, 2)
 
+    // mat2(1.0, 0.0, 0.0, 1.0) => mat2(1.0)
+    if(node.parent && is_redundant_matrix_literal(node.parent) && node.parent.children.indexOf(node) > 1) return
+    if(is_redundant_matrix_literal(node)) node.children = node.children.slice(0, 2)
+
     if(should_mutate(node)) {
       var t = node.parent.parent.children[1]
       if(mutate_storages || (t.type === 'placeholder' || t.token.data === 'const')) {
@@ -87,6 +91,30 @@ function minifier(safe_words, mutate_storages) {
       (node.children[1].type === 'literal' || node.children[1].type === 'ident')) {
       var first = node.children[1].data
       for(var i = 2; i < node.children.length; i++) if(node.children[i].data !== first) return false
+      return true
+    }
+    return false
+  }
+
+  function is_redundant_matrix_literal(node) {
+    if(node.type === 'call' && /^mat[234]$/.test(node.children[0].data) &&
+      (node.children[1].type === 'literal' || node.children[1].type === 'ident')) {
+      var rows = Math.sqrt(node.children.length - 1);
+      var first = node.children[1].data;
+
+      for(var i = 2; i < node.children.length; i++) {
+        var diagonalPosition = !((i - 1) % (rows + 1));
+        var data = node.children[i].data;
+
+        if (diagonalPosition) {
+          if (data !== first) {
+            return false;
+          }
+        } else if (!(node.children[i].type === 'literal' || node.children[i].type === 'ident') || parseFloat(data) !== 0) {
+          return false;
+        }
+      }
+
       return true
     }
     return false
