@@ -38,6 +38,10 @@ function minifier(safe_words, mutate_storages) {
       }
     }
 
+    // vec2(1.0, 1.0) => vec2(1.0)
+    if(node.parent && is_redundant_vector_literal(node.parent) && node.parent.children.indexOf(node) > 1) return
+    if(is_redundant_vector_literal(node)) node.children = node.children.slice(0, 2)
+
     if(should_mutate(node)) {
       var t = node.parent.parent.children[1]
       if(mutate_storages || (t.type === 'placeholder' || t.token.data === 'const')) {
@@ -74,6 +78,16 @@ function minifier(safe_words, mutate_storages) {
       for(var i = 0; i < commutative_operators.length; i++) {
         if(node.parent.data === commutative_operators[i] && node.children[0].data === commutative_operators[i]) return true
       }
+    }
+    return false
+  }
+
+  function is_redundant_vector_literal(node) {
+    if(node.type === 'call' && /^[ib]?vec[234]$/.test(node.children[0].data) &&
+      (node.children[1].type === 'literal' || node.children[1].type === 'ident')) {
+      var first = node.children[1].data
+      for(var i = 2; i < node.children.length; i++) if(node.children[i].data !== first) return false
+      return true
     }
     return false
   }

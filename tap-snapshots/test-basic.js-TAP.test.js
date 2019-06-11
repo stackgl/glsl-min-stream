@@ -143,7 +143,7 @@ void N() {
   i[0] = i[1] = i[2] = i[3] = s;
   i[4] = X * s;
   i[5] = W * s;
-  k[0] = vec3(0, 0, 0);
+  k[0] = vec3(0);
   k[1] = S * (1. + X / W);
   k[2] = T * (1. + W / X);
   j[0][0] = normalize(S - V);
@@ -197,7 +197,7 @@ void main(void) {
   float bb = cos(Z);
   mat3 bc = mat3(vec3(bb, 0, ba), vec3(0, 1, 0), vec3(-ba, 0, bb));
   vec3 bd = vec3(0, 1, 0);
-  vec3 be = vec3(0, 0, 0);
+  vec3 be = vec3(0);
   float bf = .0;
   float bg = .5 * c / 2.01;
   vec3 bh = bc * vec3(cos(bg), sin(bg), .0) * 2.;
@@ -383,7 +383,7 @@ void M() {
   h[0] = h[1] = h[2] = h[3] = r;
   h[4] = W * r;
   h[5] = V * r;
-  j[0] = vec3(0, 0, 0);
+  j[0] = vec3(0);
   j[1] = R * (1. + W / V);
   j[2] = S * (1. + V / W);
   i[0][0] = normalize(R - U);
@@ -437,7 +437,7 @@ void main(void) {
   float ba = cos(Y);
   mat3 bb = mat3(vec3(ba, 0, Z), vec3(0, 1, 0), vec3(-Z, 0, ba));
   vec3 bc = vec3(0, 1, 0);
-  vec3 bd = vec3(0, 0, 0);
+  vec3 bd = vec3(0);
   float be = .0;
   float bf = .5 * PI / 2.01;
   vec3 bg = bb * vec3(cos(bf), sin(bf), .0) * 2.;
@@ -623,7 +623,7 @@ void R() {
   m[0] = m[1] = m[2] = m[3] = w;
   m[4] = bb * w;
   m[5] = ba * w;
-  o[0] = vec3(0, 0, 0);
+  o[0] = vec3(0);
   o[1] = W * (1. + bb / ba);
   o[2] = X * (1. + ba / bb);
   n[0][0] = normalize(W - Z);
@@ -677,7 +677,7 @@ void main(void) {
   float bf = cos(bd);
   mat3 bg = mat3(vec3(bf, 0, be), vec3(0, 1, 0), vec3(-be, 0, bf));
   vec3 bh = vec3(0, 1, 0);
-  vec3 bi = vec3(0, 0, 0);
+  vec3 bi = vec3(0);
   float bj = .0;
   float bk = .5 * g / 2.01;
   vec3 bl = bg * vec3(cos(bk), sin(bk), .0) * 2.;
@@ -742,4 +742,27 @@ float a = 2e10 + .2e2 + 1.e3 * (0xFaBc09 + 3);
 float b = 2e10 + (.2e2 - 1.e3 / (0xFaBc09 + 3));
 bool c = 1. && true && true;
 bool d = 0. || false || true;
+`
+
+exports[`test/basic.js TAP vec shorthand > output 1`] = `
+
+vec2 vec2Long = vec2(.0, 1.);
+vec2 vec2Short = vec2(.0);
+bvec2 bvec2Long = bvec2(.0, 1.);
+bvec2 bvec2Short = bvec2(.0);
+ivec2 ivec2Long = ivec2(.0, 1.);
+ivec2 ivec2Short = ivec2(.0);
+vec3 vec3Long = vec3(.0, 1., 1.);
+vec3 vec3Short = vec3(.0);
+bvec3 bvec3Long = bvec3(.0, 1., 1., 1.);
+bvec3 bvec3Short = bvec3(.0);
+ivec3 ivec3Long = ivec3(.0, 1., 1., 1.);
+ivec3 ivec3Short = ivec3(.0);
+vec4 vec4Long = vec4(.0, 1., 1., 1.);
+vec4 vec4Short = vec4(.0);
+bvec4 bvec4Long = bvec4(.0, 1., 1., 1.);
+bvec4 bvec4Short = bvec4(.0);
+ivec4 ivec4Long = ivec4(.0, 1., 1., 1.);
+ivec4 ivec4Short = ivec4(.0);
+ivec4 a = ivec4(vec2(.0, 1.), vec2(.0, 1.));
 `

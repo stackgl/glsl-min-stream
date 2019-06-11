@@ -11,6 +11,7 @@ const through = require("through");
 const zeroGLSL = path.resolve(__dirname, "./zero-decimals.glsl");
 const commutativeGLSL = path.resolve(__dirname, "./commutative-operators.glsl");
 const workingGLSL = path.resolve(__dirname, "./working.glsl");
+const vecGLSL = path.resolve(__dirname, "./vec-shorthand.glsl");
 
 tap.test("basic", t => {
 	let output = "";
@@ -86,6 +87,54 @@ tap.test("decimals starting or ending with 0", t => {
 	.pipe(tokenizer())
 	.pipe(parser())
 	.pipe(minify())
+	.pipe(deparser())
+	.pipe(endStream);
+});
+
+tap.test("vec shorthand", t => {
+	const types = ["", "b", "i"]
+	.map(prefix => [2,3,4].map(size => `${prefix}vec${size}`))
+	.reduce((a, b) => a.concat(b));
+
+	const variableNames = types
+	.map(type => ["Short", "Long"].map(suffix => `${type}${suffix}`))
+	.reduce((a, b) => a.concat(b));
+
+	const safewords = [
+		"main",
+		...variableNames,
+	];
+
+	let output = "";
+
+	const endStream = through((data) => {
+		output += data;
+	}, () => {
+		t.matchSnapshot(output, "output");
+
+		t.ok(
+			variableNames
+			.filter(name => name.endsWith("Long"))
+			.every(name => output.includes(`${name} = ${name.replace("Long", "")}(.0, 1.`)),
+			"does not retain differing scalars"
+		);
+
+		t.ok(
+			variableNames
+			.filter(name => name.endsWith("Short"))
+			.every(name => output.includes(`${name} = ${name.replace("Short", "")}(.0)`)),
+			"does not shorten identical scalars"
+		);
+
+		t.ok(output.includes("ivec4(vec2(.0, 1.), vec2(.0, 1.))"), "does not preserve vectors in initalizer");
+
+		t.end();
+	});
+
+	fs.createReadStream(vecGLSL)
+	.pipe(tokenizer())
+	.pipe(parser())
+	.pipe(minify(safewords))
 	.pipe(deparser())
 	.pipe(endStream);
 });
