@@ -7,6 +7,9 @@ var lang = require('cssauron-glsl')
   , through = require('through')
   , shortest = require('shortest')
 
+// recognize commutative + but not * as these are conditional
+var commutative_operators = ['+', '&&', '||']
+
 function minifier(safe_words, mutate_storages) {
   safe_words = safe_words || ['main']
 
@@ -23,6 +26,18 @@ function minifier(safe_words, mutate_storages) {
   return through(mutate)
 
   function mutate(node) {
+    // remove unnecessary grouping operators
+    if(is_unnecessary_group(node)) return
+
+    if(node.parent) {
+      for(var current = node.parent; current.parent; current = current.parent) {
+        if(is_unnecessary_group(current)) {
+          current.parent.children[current.parent.children.indexOf(current)] = current.children[0]
+          current.children[0].parent = current.parent
+        }
+      }
+    }
+
     // vec2(1.0, 1.0) => vec2(1.0)
     if(node.parent && is_redundant_vector_literal(node.parent) && node.parent.children.indexOf(node) > 1) return
     if(is_redundant_vector_literal(node)) node.children = node.children.slice(0, 2)
@@ -54,6 +69,17 @@ function minifier(safe_words, mutate_storages) {
 
     return base &&
           !safe_words.hasOwnProperty(node.token.data)
+  }
+
+  function is_unnecessary_group(node) {
+    if(node.type !== 'group') return false
+    if(node.children[0].lbp > node.parent.lbp) return true
+    if(node.children[0].lbp === node.parent.lbp) {
+      for(var i = 0; i < commutative_operators.length; i++) {
+        if(node.parent.data === commutative_operators[i] && node.children[0].data === commutative_operators[i]) return true
+      }
+    }
+    return false
   }
 
   function is_redundant_vector_literal(node) {

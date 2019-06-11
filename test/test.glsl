@@ -56,7 +56,7 @@ int first, second, third, fourth, fifth, sixth, seventh, eigth;
         vPosition = position;
         vec3 thing = vec2(1., 2.);
         int v_thing, garybusey;
-        thing.rgba = 2e10 + .2e2 + 1.e3 * 0xFaBc09 + (3 * v_thing);
+        thing.rgba = 2e10 + (.2e2 + (1.e3 * 0xFaBc09 + (3 * v_thing)));
 
         for(xxx i = 0; i < 10; ++i) {
           discard;

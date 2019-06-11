@@ -9,6 +9,7 @@ const path = require("path");
 const through = require("through");
 
 const zeroGLSL = path.resolve(__dirname, "./zero-decimals.glsl");
+const commutativeGLSL = path.resolve(__dirname, "./commutative-operators.glsl");
 const workingGLSL = path.resolve(__dirname, "./working.glsl");
 const vecGLSL = path.resolve(__dirname, "./vec-shorthand.glsl");
 
@@ -85,7 +86,7 @@ tap.test("decimals starting or ending with 0", t => {
 	fs.createReadStream(zeroGLSL)
 	.pipe(tokenizer())
 	.pipe(parser())
-	.pipe(minify(["main"], true))
+	.pipe(minify())
 	.pipe(deparser())
 	.pipe(endStream);
 });
@@ -137,3 +138,22 @@ tap.test("vec shorthand", t => {
 	.pipe(deparser())
 	.pipe(endStream);
 });
+
+tap.test("grouping removal test", t => {
+	let output = "";
+
+	const endStream = through((data) => {
+		output += data;
+	}, () => {
+		t.matchSnapshot(output, "output");
+		t.end();
+	});
+
+	fs.createReadStream(commutativeGLSL)
+	.pipe(tokenizer())
+	.pipe(parser())
+	.pipe(minify())
+	.pipe(deparser())
+	.pipe(endStream);
+});
+

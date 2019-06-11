@@ -736,6 +736,14 @@ float f = .1;
 float g = .01;
 `
 
+exports[`test/basic.js TAP grouping removal test > output 1`] = `
+
+float a = 2e10 + .2e2 + 1.e3 * (0xFaBc09 + 3);
+float b = 2e10 + (.2e2 - 1.e3 / (0xFaBc09 + 3));
+bool c = 1. && true && true;
+bool d = 0. || false || true;
+`
+
 exports[`test/basic.js TAP vec shorthand > output 1`] = `
 
 vec2 vec2Long = vec2(.0, 1.);
