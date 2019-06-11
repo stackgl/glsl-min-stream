@@ -760,6 +760,7 @@ vec3 e = vec3(1, 0, 0);
 vec3 f = vec3(0, 1, 0);
 vec3 g = vec3(0, 0, 1);
 mat3 h = mat3(e, f, g);
+mat3 i = mat3(mat3(1));
 `
 
 exports[`test/basic.js TAP vec shorthand > output 1`] = `

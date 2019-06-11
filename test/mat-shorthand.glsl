@@ -57,3 +57,6 @@ mat3 mat3WithVecIdent = mat3(
   vec3two,
   vec3three
 );
+
+mat3 mat3WithMat = mat3(mat3(1, 0, 0, 0, 1, 0, 0, 0, 1));
+
